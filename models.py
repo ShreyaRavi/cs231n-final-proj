@@ -19,7 +19,7 @@ def resnet_50_classify(dropout_prob):
 
 
 # untested so far -- will prob take a while to train
-def resnet50_less_frozen(dropout_prob, num_layers_unfreeze=1):
+def resnet50_less_frozen(dropout_prob, num_layers_unfreeze=2):
 	model = models.resnet50(pretrained=True, progress=True)
 
     layer_cnt = 0
