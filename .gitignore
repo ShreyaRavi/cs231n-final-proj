@@ -1,0 +1,8 @@
+data/*
+data/
+__pycache__/*
+__pycache__/
+.DS_Store
+imgs_out*
+imgs_blur*
+imgs_skin*
