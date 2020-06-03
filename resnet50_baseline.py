@@ -7,9 +7,10 @@ from torchvision import datasets, transforms, models
 from sklearn import metrics
 import os
 
-SAVE_MODEL_PATH = 'baseline_resnet50_f1_aug_test_10.bin'
 
-def train_model(trainloader, testloader, model, epochs=1, learning_rate=0.003, progress_steps=10):
+def train_model(trainloader, testloader, model, experiment_name, epochs=1, learning_rate=0.003, progress_steps=10):
+    
+    SAVE_MODEL_PATH = 'baseline_resnet50_' + experiment_name + '.bin'
     print("SAVE_MODEL_PATH:",SAVE_MODEL_PATH)
     #os.mkdir("modelfiles")
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
