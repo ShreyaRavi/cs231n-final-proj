@@ -9,6 +9,7 @@ from data_processing import load_split_train_test
 from resnet50_baseline import train_model
 import argparse
 from models import resnet_50_classify
+from models import spat_transform_resnet50
 
 
 if __name__ == "__main__":
@@ -45,6 +46,11 @@ if __name__ == "__main__":
                     type=str,
                     required=True,
                     help="Write in the name of the experiment")
+    parser.add_argument("--stn",
+                    default=False,
+                    type=bool,
+                    required=True,
+                    help="Boolean True to turn on the STN baby")
      
     args = parser.parse_args()
     datadir = args.datadir
@@ -52,11 +58,17 @@ if __name__ == "__main__":
     split_mode = args.split_mode
     num_epochs = args.num_epochs
     experiment_name = args.experiment_name
+    stn = args.stn 
     print("num_epochs:", num_epochs)
     learning_rate = args.learning_rate
     print("learning_rate", learning_rate)
     print("Data dir:", datadir)
+    print("STN ON:", stn)
     trainloader, testloader  = load_split_train_test(datadir, split_mode,valid_size = .2, localSplit=localSplit)
-    model = resnet_50_classify(dropout_prob = 0.2)
-    train_model(trainloader, testloader, model, experiment_name, epochs=num_epochs, learning_rate=learning_rate, progress_steps=10)
+    model = None
+    if(stn):
+        model = spat_transform_resnet50()
+    else:
+        model = resnet_50_classify(dropout_prob = 0.2)
+    train_model(trainloader, testloader, model, experiment_name,stn, epochs=num_epochs, learning_rate=learning_rate, progress_steps=10)
     

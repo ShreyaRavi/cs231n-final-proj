@@ -8,7 +8,7 @@ from sklearn import metrics
 import os
 
 
-def train_model(trainloader, testloader, model, experiment_name, epochs=1, learning_rate=0.003, progress_steps=10):
+def train_model(trainloader, testloader, model,experiment_name, stn, epochs=1, learning_rate=0.003, progress_steps=10):
     
     SAVE_MODEL_PATH = 'baseline_resnet50_' + experiment_name + '.bin'
     print("SAVE_MODEL_PATH:",SAVE_MODEL_PATH)
@@ -16,7 +16,10 @@ def train_model(trainloader, testloader, model, experiment_name, epochs=1, learn
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
     loss_calc = nn.CrossEntropyLoss()
-    optimizer = optim.Adam(model.fc.parameters(), lr=learning_rate)
+    if(stn):
+        optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+    else:
+        optimizer = optim.Adam(model.fc.parameters(), lr=learning_rate)
     model.to(device)
 
     model.train()
