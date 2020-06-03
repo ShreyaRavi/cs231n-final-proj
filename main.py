@@ -40,16 +40,23 @@ if __name__ == "__main__":
                     type=bool,
                     required=False,
                     help="Set to False if you want the custom train and test to be used")
+    parser.add_argument("--experiment_name",
+                    default="test",
+                    type=str,
+                    required=True,
+                    help="Write in the name of the experiment")
+     
     args = parser.parse_args()
     datadir = args.datadir
     localSplit = args.localSplit
     split_mode = args.split_mode
     num_epochs = args.num_epochs
+    experiment_name = args.experiment_name
     print("num_epochs:", num_epochs)
     learning_rate = args.learning_rate
     print("learning_rate", learning_rate)
     print("Data dir:", datadir)
     trainloader, testloader  = load_split_train_test(datadir, split_mode,valid_size = .2, localSplit=localSplit)
     model = resnet_50_classify(dropout_prob = 0.2)
-    train_model(trainloader, testloader, model, epochs=num_epochs, learning_rate=learning_rate, progress_steps=10)
+    train_model(trainloader, testloader, model, experiment_name, epochs=num_epochs, learning_rate=learning_rate, progress_steps=10)
     

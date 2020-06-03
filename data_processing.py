@@ -91,29 +91,39 @@ def load_split_train_test(datadir, split_mode, valid_size = .2,localSplit = -1):
                                             pre_transform=pre_transform, post_transform=post_transform)
       train_data_bright = TransformedDataset(datapath=datadir+"/train", transform="Brightness",
                                             pre_transform=pre_transform, post_transform=post_transform)
+                                            
+      train_data_blur = TransformedDataset(datapath="imgs_blur"+"/train",
+          pre_transform=pre_transform, post_transform=post_transform)
+   
+      train_data_skin = TransformedDataset(datapath="imgs_skin"+"/train",
+          pre_transform=pre_transform, post_transform=post_transform)
+
+
 
       print("Original Dataset Size:",len(train_data_orig))
-      #os.mkdir("augmented_samples")
-      #os.chdir("augmented_samples")
-      #for i in range(10):
-      #  x, y = train_data_orig[i]
-      #  x = image_transform(x)
-      #  x.save("orig_train_"+str(i)+".jpeg", "JPEG")
+      '''
+      os.mkdir("augmented_samples")
+      os.chdir("augmented_samples")
+      for i in range(10):
+        x, y = train_data_orig[i]
+        x = image_transform(x)
+        x.save("orig_train_"+str(i)+".jpeg", "JPEG")
 
-      #  x, y = train_data_bright[i]
-      #  x = image_transform(x)
-      #  x.save("bright_train_"+str(i)+".jpeg", "JPEG")
+        x, y = train_data_bright[i]
+        x = image_transform(x)
+        x.save("bright_train_"+str(i)+".jpeg", "JPEG")
 
-      #  x, y = train_data_rotate[i]
-      #  x = image_transform(x)
-      #  x.save("rotate_train_"+str(i)+".jpeg", "JPEG")
+        x, y = train_data_rotate[i]
+        x = image_transform(x)
+        x.save("rotate_train_"+str(i)+".jpeg", "JPEG")
+      '''
 
-      datasets_list = [train_data_orig,train_data_bright,train_data_rotate]
+      #datasets_list = [train_data_orig,train_data_blur]
+      #datasets_list = [train_data_orig,train_data_skin]
+      datasets_list = [train_data_orig,train_data_blur,train_data_rotate, train_data_bright, train_data_skin]
       train_data = ConcatDataset(datasets_list)
       print("Augmented Dataset Size:", len(train_data))
       
-
-
       train_idx = np.arange(len(train_data))
       np.random.shuffle(train_idx)
       
