@@ -3,6 +3,7 @@ import torch
 from torch import nn, optim
 import torch.nn.functional as F
 from torchvision import datasets, transforms, models
+from spatial_transform import SpatialTransform
 
 def resnet_50_classify(dropout_prob):
     model = models.resnet50(pretrained=True, progress=True)
@@ -16,6 +17,11 @@ def resnet_50_classify(dropout_prob):
                                 nn.Linear(512, 10))
 
     return model
+
+
+def spat_transform_resnet50():
+	model = SpatialTransform()
+	return model
 
 
 # untested so far -- will prob take a while to train
