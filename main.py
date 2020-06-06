@@ -49,7 +49,7 @@ if __name__ == "__main__":
     parser.add_argument("--stn",
                     default=False,
                     type=bool,
-                    required=True,
+                    required=False,
                     help="Boolean True to turn on the STN baby")
      
     args = parser.parse_args()

@@ -56,7 +56,7 @@ class SpatialTransform(nn.Module):
         grid = F.affine_grid(theta, x.size())
         x = F.grid_sample(x, grid)
 
-        print(x.size())
+        #print(x.size())
 
         return x
 
