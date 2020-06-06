@@ -3,7 +3,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
 import torchvision
-from torchvision import datasets, transforms
+from torchvision import datasets, transforms, models
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -17,6 +17,7 @@ class SpatialTransform(nn.Module):
         for param in model.parameters():
             param.requires_grad = False
 
+        dropout_prob = 0.2
         model.fc = nn.Sequential(nn.Linear(2048, 512),
                                     nn.ReLU(),
                                     nn.Dropout(dropout_prob),
@@ -55,7 +56,7 @@ class SpatialTransform(nn.Module):
         grid = F.affine_grid(theta, x.size())
         x = F.grid_sample(x, grid)
 
-        print(x.size())
+        #print(x.size())
 
         return x
 
