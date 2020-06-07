@@ -6,6 +6,7 @@ import torch.nn.functional as F
 from torchvision import datasets, transforms, models
 from sklearn import metrics
 import os
+from models import resnet_50_classify
 
 def test_model(testloader, path):
 
@@ -17,8 +18,9 @@ def test_model(testloader, path):
     else:
         map_location='cpu'
         
-    model = models.resnet50(pretrained=True, progress=True)
-    model.load_state_dict(torch.load(path), strict=False) # missing keys if True
+    #model = models.resnet50(pretrained=True, progress=True)
+    model = resnet_50_classify(0.2)
+    model.load_state_dict(torch.load(path)) # missing keys if True
     model.eval()
     model.to(device)
 
@@ -40,13 +42,19 @@ def test_model(testloader, path):
             preds = torch.cat((preds, torch.argmax(output, dim=1).flatten().float()))
             y_true = torch.cat((y_true, labels.flatten().float()))
 
-            equals = preds == y_true
-            accuracy += torch.mean(equals.type(torch.FloatTensor)).item()
+        equals = preds == y_true
+        accuracy = torch.mean(equals.type(torch.FloatTensor)).item()
             
     preds = preds.to('cpu').numpy()
     y_true = y_true.to('cpu').numpy()
     f1_score = metrics.f1_score(y_true, preds, average='weighted')
+    precision = metrics.precision_score(y_true, preds, average='weighted')
+    recall = metrics.recall_score(y_true, preds, average='weighted')
+    confusion_matrix = metrics.confusion_matrix(y_true, preds)
 
     print("accuracy: ", accuracy)
     print("test loss: ", test_loss)
     print("F1 score: ", f1_score)
+    print("Precision:", precision)
+    print("Recall", recall)
+    print("Confusion Matrix: \n", confusion_matrix)
